@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+
+<body ng-controller="myCtrl">
+    <form>
+        <label>Kalimat 1 :</label>
+        <input type="text" name="" placeholder="Kalimat 1" ng-model="first">
+        <label>Kalimat 2 :</label>
+        <input type="text" name="" placeholder="Kalimat 2" ng-model="second">
+        <button ng-click="check()">Check</button>
+    </form>
+    <hr>
+    <label>Hasilnya Kedua Kalimat itu : {{hasilCheck}}</label>
+</body>
+<script type="text/javascript" src="angular.min.js"></script>
+<script type="text/javascript">
+var app = angular.module('myApp', []);
+
+app.controller('myCtrl', ['$scope', '$filter', function($scope, $filter) {
+    function convertArray(oldValue, newValue) {
+        for (var i = 0; i < oldValue.length; i++) {
+            newValue.push(oldValue[i]);
+        }
+        newValue.sort();
+    }
+    $scope.check = function() {
+        var newFirst = [];
+        var newSecond = [];
+        var status = 1;
+        var firstSentence = $filter('lowercase')($scope.first);
+        var secondSentence = $filter('lowercase')($scope.second);
+        convertArray(firstSentence, newFirst);
+        convertArray(secondSentence, newSecond);
+        if (newFirst.length === newSecond.length) {
+            for (var i = 0; i < newFirst.length; i++) {
+                if (newFirst[i] !== newSecond[i]) {
+                    status = 0;
+                }
+            }
+            if (status === 1) {
+                $scope.hasilCheck = "Kalimat Sama";
+            } else {
+                $scope.hasilCheck = "Kalimat Tidak Sama";
+            }
+        } else {
+            $scope.hasilCheck = "Kalimat Tidak Sama"
+        }
+    }
+}])
+</script>
+
+</html>
